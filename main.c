@@ -2,26 +2,32 @@
 #include<dirent.h>
 int main(void){
 	initscr();
-	raw();
+	cbreak();
 	noecho();
 	keypad(stdscr, true);
-	curs_set(0);
 	int cursor = 0;
 	while(1){
+		// set vars
 		struct dirent *de;
 		DIR *dr = opendir(".");
-		erase();
+		char *current_file_name;
 		int i = 0;
+		// draw
+		erase();
 		while ((de = readdir(dr)) != NULL){
-			printw("%c%s\n", ((i == cursor) ? '=' : ' '),de->d_name);
+			if(i == cursor)
+				current_file_name = de->d_name;
+			printw("%c%s\n", ((i == cursor) ? '=' : ' '), de->d_name);
 			i++;
 		}
+		// get input
 		char input = getch();
 		switch(input){
 			case 'q': endwin(); return 0;
 			case 'j': cursor++; break;
 			case 'k': if(cursor > 0) cursor--; break;
 		}
+		// free stuff
 		closedir(dr);
 	}
 }
