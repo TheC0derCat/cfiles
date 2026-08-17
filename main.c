@@ -19,7 +19,7 @@ int main(void){
 		// draw
 		erase();
 		char s[100];
-		printw("%d: %s\n", cursor, getcwd(s, sizeof(s)));
+		printw("%d.%s\n", cursor, getcwd(s, sizeof(s)));
 		while ((de = readdir(dr)) != NULL){
 			if(dirlen == cursor)
 				current_file_name = de->d_name;
