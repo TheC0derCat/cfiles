@@ -40,6 +40,12 @@ int main(void){
 			case 'k': if(cursor > 0) cursor--; break;
 			case 'h': chdir(".."); break;
 			case 'l': chdir(current_file_name); break;
+			case 'd':
+				  erase();
+				  printw("Are you sure you want to delete %s? (y/n)", current_file_name);
+				  if(getch() == 'y')
+					  remove(current_file_name);
+				  break;
 		}
 		if(cursor >= (dirlen))
 			cursor = dirlen;
