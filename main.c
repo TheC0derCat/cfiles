@@ -1,11 +1,17 @@
 #include<ncurses.h>
 int main(void){
 	initscr();
-	cbreak();
+	raw();
 	noecho();
 	keypad(stdscr, true);
-	printw("Hello, world!");
-	getch();
-	endwin();
-	return 0;
+	while(1){
+		erase();
+		printw("Hello, world!");
+		int input = getch();
+		switch(input){
+			case 'q':
+				endwin();
+				return 0;
+		}
+	}
 }
