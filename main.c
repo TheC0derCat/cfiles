@@ -5,6 +5,7 @@ int main(void){
 	raw();
 	noecho();
 	keypad(stdscr, true);
+	curs_set(0);
 	int cursor = 0;
 	while(1){
 		struct dirent *de;
