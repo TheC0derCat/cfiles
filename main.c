@@ -1,5 +1,8 @@
 #include<ncurses.h>
 #include<dirent.h>
+#include<stdlib.h>
+#include<stdio.h>
+#include<unistd.h>
 int main(void){
 	initscr();
 	cbreak();
@@ -12,21 +15,29 @@ int main(void){
 		DIR *dr = opendir(".");
 		char *current_file_name;
 		int i = 0;
+		int dirlen = 0;
 		// draw
 		erase();
+		char s[100];
+		printw("%d: %s\n", cursor, getcwd(s, 100));
 		while ((de = readdir(dr)) != NULL){
-			if(i == cursor)
+			if(dirlen == cursor)
 				current_file_name = de->d_name;
-			printw("%s\n", de->d_name);
+			if(de->d_name[0] != '.'){
+				printw("%d.%s\n", dirlen, de->d_name);
+				dirlen++;
+			}
 			i++;
 		}
-		move(cursor, 0);
+		move(cursor + 1, 0);
 		// get input
 		char input = getch();
 		switch(input){
 			case 'q': endwin(); return 0;
-			case 'j': cursor++; break;
+			case 'j': if(cursor < dirlen) cursor++; break;
 			case 'k': if(cursor > 0) cursor--; break;
+			case 'h': chdir(".."); break;
+			case 'l': chdir(current_file_name); break;
 		}
 		// free stuff
 		closedir(dr);
