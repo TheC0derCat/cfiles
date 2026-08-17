@@ -15,7 +15,7 @@ int main(void){
 		DIR *dr = opendir(".");
 		char *current_file_name;
 		int i = 0;
-		int dirlen = 0;
+		int dirlen = 0;	
 		// draw
 		erase();
 		char s[100];
@@ -29,16 +29,20 @@ int main(void){
 			}
 			i++;
 		}
+		if(cursor >= (dirlen))
+			cursor = dirlen;
 		move(cursor + 1, 0);
 		// get input
 		char input = getch();
 		switch(input){
 			case 'q': endwin(); return 0;
-			case 'j': if(cursor < dirlen) cursor++; break;
+			case 'j': cursor++; break;
 			case 'k': if(cursor > 0) cursor--; break;
 			case 'h': chdir(".."); break;
 			case 'l': chdir(current_file_name); break;
 		}
+		if(cursor >= (dirlen))
+			cursor = dirlen;
 		// free stuff
 		closedir(dr);
 	}
