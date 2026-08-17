@@ -17,9 +17,10 @@ int main(void){
 		while ((de = readdir(dr)) != NULL){
 			if(i == cursor)
 				current_file_name = de->d_name;
-			printw("%c%s\n", ((i == cursor) ? '=' : ' '), de->d_name);
+			printw("%s\n", de->d_name);
 			i++;
 		}
+		move(cursor, 0);
 		// get input
 		char input = getch();
 		switch(input){
