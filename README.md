@@ -7,6 +7,8 @@ q: quit program
 
 d: delete file
 
+n: rename file
+
 k: cursor up
 
 j: cursor down

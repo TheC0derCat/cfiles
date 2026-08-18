@@ -1,8 +1,10 @@
 #include<ncurses.h>
+#include<form.h>
 #include<dirent.h>
 #include<stdlib.h>
 #include<stdio.h>
 #include<unistd.h>
+#include<string.h>
 int main(void){
 	initscr();
 	cbreak();
@@ -57,7 +59,29 @@ int main(void){
 				if(getch() == 'y')
 					remove(current_file_name);
 				break;
+			case 'n':
+				char new_file_name[100];
+				strcpy(new_file_name, current_file_name);
+				while(1) {
+					erase();
+					addstr(new_file_name);
+					int input2 = getch();
+					switch(input2){
+						case '\n':
+							rename(current_file_name, new_file_name);
+							goto stuff;
+						case KEY_BACKSPACE:
+							new_file_name[strlen(new_file_name)-1] = '\0';
+							break;
+						default:
+							new_file_name[strlen(new_file_name)] = input2;
+							break;
+					}
+				}
+				break;
+
 		}
+stuff:
 		if(cursor >= (dirlen))
 			cursor = dirlen;
 		// free stuff
