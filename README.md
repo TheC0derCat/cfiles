@@ -1,6 +1,8 @@
 # cfiles
 Simple ncurses based tui file manager written in C
 
+![screenshot](cfilesscreenshot.png)
+
 Controlls:
 
 q: quit program
