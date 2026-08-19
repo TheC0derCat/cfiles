@@ -21,6 +21,20 @@ void write_file_content(char *file, char *content){
 	FILE *fp = fopen(file, "w");
 	fprintf(fp, "%s", content);
 	fclose(fp);
+	return;
+}
+int copy_file_content(char *source, char *destination){
+	if(destination[0] != '\0'){
+		char * content = read_file_content(source);
+		write_file_content(destination, content);
+		free(content);
+		destination = "";
+		return 0;
+	}
+	else {
+		return 1;
+	}
+
 }
 int main(void){
 	initscr();
@@ -28,8 +42,8 @@ int main(void){
 	noecho();
 	keypad(stdscr, true);
 	int cursor = 0;
-	char yanked_file_name[100];
-	char yanked_file_path[200];
+	char yanked_file_name[100] = "";
+	char yanked_file_path[200] = "";
 	while(1){
 		// set vars
 		struct dirent *de;
@@ -87,9 +101,7 @@ int main(void){
 						case '\n':
 							rename(current_file_name, new_file_name);
 							goto stuff;
-						case KEY_BACKSPACE:
-							new_file_name[strlen(new_file_name)-1] = '\0';
-							break;
+						case KEY_BACKSPACE: new_file_name[strlen(new_file_name)-1] = '\0'; break;
 						default:
 							new_file_name[strlen(new_file_name)] = input2;
 							break;
@@ -98,17 +110,14 @@ int main(void){
 				break;
 			case 'y':
 				strcpy(yanked_file_name, current_file_name);
+				yanked_file_path[0] = '\0';
 				sprintf(yanked_file_path, "%s/%s", wd, yanked_file_name);
 				break;
 			case 'c':
-				char * content = read_file_content(yanked_file_path);
-				write_file_content(yanked_file_name, content);
-				free(content);
+				copy_file_content(yanked_file_path, yanked_file_name);
 				break;
 			case 'm':
-				char * content2 = read_file_content(yanked_file_path);
-				write_file_content(yanked_file_name, content2);
-				free(content2);
+				copy_file_content(yanked_file_path, yanked_file_name);
 				remove(yanked_file_path);
 				break;
 
